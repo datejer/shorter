@@ -1,26 +1,29 @@
-import Link from 'next/link'
-import fetch from 'node-fetch'
+import { useRouter } from "next/router";
+import Link from "next/link";
+import fetch from "node-fetch";
 
-function Index({ stars }) {
-  return (
-    <div>
-      <p>Next.js has {stars} ⭐️</p>
-      <Link href="/preact-stars">
-        <a>How about preact?</a>
-      </Link>
-    </div>
-  )
-}
+const Index = ({ stars }) => {
+	const router = useRouter();
+	const { id } = router.query;
 
-export async function getStaticProps() {
-  const res = await fetch('https://api.github.com/repos/zeit/next.js')
-  const json = await res.json()
+	if (id) {
+		const res = await fetch("https://api.github.com/repos/zeit/next.js");
+		const json = await res.json();
 
-  return {
-    props: {
-      stars: json.stargazers_count,
-    },
-  }
-}
+		router.push(json.url)
+	}
+	
 
-export default Index
+	return <p>Post: {pid}</p>;
+
+	return (
+		<div>
+			<p>Next.js has {stars} ⭐️</p>
+			<Link href="/preact-stars">
+				<a>How about preact?</a>
+			</Link>
+		</div>
+	);
+};
+
+export default Index;
